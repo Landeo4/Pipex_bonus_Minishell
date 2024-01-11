@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/04 09:28:48 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/11 16:43:20 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/11 16:47:04 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,9 +130,15 @@ int	**alloc_pipe(int i, int **pipefd)
 		pipe(pipefd[0]);
 	}
 	if (i % 2 == 0)
+	{
 		pipe(pipefd[0]);
+		// pipefd = malloc(sizeof(int) * 2);
+	}
 	else
+	{
 		pipe(pipefd[1]);
+		// pipefd = malloc(sizeof(int) * 2);
+	}
 	return (pipefd);
 }
 
