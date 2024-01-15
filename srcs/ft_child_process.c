@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 15:58:51 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/15 14:43:24 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/15 18:00:56 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	child_process_in(int **pipesfd, char **argv, char **env, int i)
 		close(pipesfd[0][1]);
 	}
 	ft_do_process(env, argv[i]);
-	exit(0);
+	return (-1);
 }//donc la c'est pour la premiere fois
 
 int	child_process_middle(int **pipesfd, char **argv, char **env, int i)
@@ -57,7 +57,7 @@ int	child_process_middle(int **pipesfd, char **argv, char **env, int i)
 	}
 	close(pipesfd[1][1]);
 	ft_do_process(env, argv[i]);
-	exit(0);
+	return (-1);
 }
 
 int	child_process_out(int **pipesfd, char **argv, char **env, int i)
@@ -80,7 +80,7 @@ int	child_process_out(int **pipesfd, char **argv, char **env, int i)
 			return (free(pipesfd), printf("problem with dup2"), -1);
 	}
 	ft_do_process(env, argv[i]);
-	exit(0);
+	return (-1);
 }
 
 // int	parent_process(t_pipes *pipesfd, char **argv, char **env, int i)

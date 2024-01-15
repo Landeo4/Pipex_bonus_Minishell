@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 16:39:00 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/15 13:14:26 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/15 17:49:58 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int		ft_parsing(int argc);
 int		ft_verif_error(char *buff, int fd[]);
 int		ft_create_fd(char *argv, int flag);
 char	*ft_get_pass(char *argv, char *envp, int i);
-void	ft_do_process(char *envp[], char *cmd);
+int		ft_do_process(char *envp[], char *cmd);
 char	**ft_take_line(char **big, char *little);
 void	ft_freedb(char **str);
 void	ft_execute(char	*cmd, char	**env);

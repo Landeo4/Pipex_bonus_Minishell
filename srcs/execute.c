@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tpotillion <tpotillion@student.42.fr>      +#+  +:+       +#+        */
+/*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 09:19:12 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/06 07:53:08 by tpotillion       ###   ########.fr       */
+/*   Updated: 2024/01/15 17:49:40 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void	ft_do_process(char *envp[], char *cmd)
+int		ft_do_process(char *envp[], char *cmd)
 {
 	int		i;
 	char	**path;
@@ -37,7 +37,8 @@ void	ft_do_process(char *envp[], char *cmd)
 	ft_freedb(path);
 	execve(cmd_argument[0], cmd_argument, envp);
 	ft_freedb(cmd_argument);
-	return ;
+	fprintf(stderr, "command invalid\n");
+	return (-1);
 }
 
 char	**ft_get_path(char **env)
