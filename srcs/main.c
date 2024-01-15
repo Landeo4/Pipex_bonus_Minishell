@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 17:00:57 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/11 16:41:12 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/15 13:24:13 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@
 int	main(int argc, char *argv[], char *envp[])
 {
 	char **new_argv;
-	// (void)argc;
+	int		new_argc;
+	(void)argc;
 	// (void)file;
 	// (void)envp;
 	// int	file[2];
@@ -49,13 +50,15 @@ int	main(int argc, char *argv[], char *envp[])
 	int i = 0;
 	// fprintf(stderr, "petit calcul 0 modulo = %d\n", (0 % 2));
 	new_argv = get_new_argv(argv);
+	new_argc = found_max(new_argv);
 	while (new_argv[i])
 	{
 		fprintf(stderr, "%s\n", new_argv[i]);
 		i++;
 	}
-	ft_pipex(new_argv, envp, argc);
+	ft_pipex(new_argv, envp, new_argc);
 	ft_freedb_essaie(new_argv);
+	fprintf(stderr, "FIN DU PROGRAMME\n");
 	return (0);
 }
 
@@ -88,17 +91,20 @@ char	**get_new_argv(char *argv[])
 	while (argv[i])
 	{
 		j = 0;
-		len = len_fd_tab(argv, i) + 1;
-		buf[c] = malloc(sizeof(char) * len);
-		if (!buf[c])
-			return (printf("malloc problem at new_argv\n"), free(buf), NULL);
-		while (argv[i][j])
+		if (verif_arg_fd(argv, i) == -1)
 		{
-			buf[c][j] = argv[i][j];
-			j++;
+			len = len_fd_tab(argv, i) + 1;
+			buf[c] = malloc(sizeof(char) * len);
+			if (!buf[c])
+				return (printf("malloc problem at new_argv\n"), free(buf), NULL);
+			while (argv[i][j])
+			{
+				buf[c][j] = argv[i][j];
+				j++;
+			}
+			buf[c][j] = '\0';
+			c++;
 		}
-		buf[c][j] = '\0';
-		c++;
 		i++;
 	}
 	buf[c] = '\0';
@@ -111,7 +117,7 @@ int	verif_arg_fd(char *argv[], int i)
 
 	fd = open(argv[i], O_RDONLY, 0644);
 	if (fd < 0)
-		return (1);
+		return (-1);
 	// close(fd);
 	return (fd);
 }

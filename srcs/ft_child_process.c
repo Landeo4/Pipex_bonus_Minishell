@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 15:58:51 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/11 16:34:59 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/15 14:43:24 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,12 @@ int	child_process_in(int **pipesfd, char **argv, char **env, int i)
 		close(pipesfd[0][1]);
 	}
 	ft_do_process(env, argv[i]);
-	return (0);
+	exit(0);
 }//donc la c'est pour la premiere fois
 
 int	child_process_middle(int **pipesfd, char **argv, char **env, int i)
 {
+	fprintf(stderr, "mid\n");
 	if (i % 2 == 1)
 	{
 		if (dup2(pipesfd[0][0], STDIN_FILENO) < 0)
@@ -56,7 +57,7 @@ int	child_process_middle(int **pipesfd, char **argv, char **env, int i)
 	}
 	close(pipesfd[1][1]);
 	ft_do_process(env, argv[i]);
-	return (0);
+	exit(0);
 }
 
 int	child_process_out(int **pipesfd, char **argv, char **env, int i)
@@ -79,7 +80,7 @@ int	child_process_out(int **pipesfd, char **argv, char **env, int i)
 			return (free(pipesfd), printf("problem with dup2"), -1);
 	}
 	ft_do_process(env, argv[i]);
-	return (0);
+	exit(0);
 }
 
 // int	parent_process(t_pipes *pipesfd, char **argv, char **env, int i)
