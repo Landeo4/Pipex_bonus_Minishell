@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:32:11 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/16 14:59:30 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/16 18:39:40 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,71 +40,54 @@
 
 int	ft_pipex(char *argv[], char *env[], int argc)
 {
-	// pid_t		pid;
+	pid_t		pid;
 	int			**pipefd;
 	int			i;
 
 	i = 0;
 	// fprintf(stderr, "argc = %d\n", argc);
 	pipefd = NULL;
-	if (argc == 1)
+	while (i < argc)
 	{
-		(void)pipefd;
-		fprintf(stderr, "je passe par la\n");
-		// pipefd = alloc_pipe(i, pipefd);
-		// if (!pipefd[1] || !pipefd[0])
-		// 	return (free(pipefd), -1);
-		// close(pipefd[0][1]);
-		// close(pipefd[0][0]);
-		// close(pipefd[1][0]);
-		// close(pipefd[1][1]);
-		child_process_single(pipefd, argv, env, i);
-		return (0);
+		pipefd = alloc_pipe(i, pipefd);
+		if (!pipefd[1] || !pipefd[0])
+			return (free(pipefd), -1);
+		pid = fork();
+		if (pid < 0)
+			return (printf("erreur de fork\n"), 1);
+		if (pid == 0)
+		{
+			if (i == 0)
+			{
+				if (child_process_in(pipefd, argv, env, i) == -1)
+					return (free(pipefd[0]), free(pipefd[1]), free(pipefd),-1);
+			}
+			else if (i == argc - 1)
+			{
+				if (child_process_out(pipefd, argv, env, i) == -1)
+					return (free(pipefd[0]), free(pipefd[1]), free(pipefd),-1);
+			}
+			else
+			{
+				if (child_process_middle(pipefd, argv, env, i) == -1)
+					return (free(pipefd[0]), free(pipefd[1]), free(pipefd),-1);
+			}
+		}
+		if (i % 2 == 0)
+		{
+			close(pipefd[0][0]);
+			close(pipefd[0][1]);
+		}
+		else
+		{
+			close(pipefd[1][0]);
+			close(pipefd[1][1]);
+		}
+		i++;
 	}
-	// else
-	// {
-	// 	while (i < argc)
-	// 	{
-	// 		pipefd = alloc_pipe(i, pipefd);
-	// 		if (!pipefd[1] || !pipefd[0])
-	// 			return (free(pipefd), -1);
-	// 		pid = fork();
-	// 		if (pid < 0)
-	// 			return (printf("erreur de fork\n"), 1);
-	// 		if (pid == 0)
-	// 		{
-	// 			if (i == 0)
-	// 			{
-	// 				if (child_process_in(pipefd, argv, env, i) == -1)
-	// 					return (free(pipefd[0]), free(pipefd[1]), free(pipefd),-1);
-	// 			}
-	// 			else if (i == argc - 1)
-	// 			{
-	// 				if (child_process_out(pipefd, argv, env, i) == -1)
-	// 					return (free(pipefd[0]), free(pipefd[1]), free(pipefd),-1);
-	// 			}
-	// 			else
-	// 			{
-	// 				if (child_process_middle(pipefd, argv, env, i) == -1)
-	// 					return (free(pipefd[0]), free(pipefd[1]), free(pipefd),-1);
-	// 			}
-	// 		}
-	// 		if (i % 2 == 0)
-	// 		{
-	// 			close(pipefd[0][0]);
-	// 			close(pipefd[0][1]);
-	// 		}
-	// 		else
-	// 		{
-	// 			close(pipefd[1][0]);
-	// 			close(pipefd[1][1]);
-	// 		}
-	// 		i++;
-	// 	}
-	// }
-	// fprintf(stderr, "HELOOOOO\n");
-	// if (pid > 0)
-	// 	parent_process(pipefd);
+	fprintf(stderr, "HELOOOOO\n");
+	if (pid > 0)
+		parent_process(pipefd);
 	return (0);
 }
 

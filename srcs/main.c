@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 17:00:57 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/16 11:32:59 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/16 18:41:30 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	char	**new_argv;
 	int		new_argc;
+	int		**pipefd;
 	(void)argc;
 	// int	file[2];
 
@@ -53,7 +54,19 @@ int	main(int argc, char *argv[], char *envp[])
 	// 	fprintf(stderr, "%s\n", new_argv[i]);
 	// 	i++;
 	// }
-	ft_pipex(new_argv, envp, new_argc);
+	fprintf(stderr, "==avant pipex==\n");
+	if (argc == 2)
+	{
+		pipefd = NULL;
+		pipefd = alloc_pipe(0, pipefd);
+		if (!pipefd[1] || !pipefd[0])
+			return (free(pipefd), -1);
+		fprintf(stderr, "je passe par la\n");
+		child_process_single(pipefd, new_argv, envp, 0);
+		return (0);
+	}
+	else
+		ft_pipex(new_argv, envp, new_argc);
 	ft_freedb_essaie(new_argv);
 	// fprintf(stderr, "FIN DU PROGRAMME\n");
 	return (0);
