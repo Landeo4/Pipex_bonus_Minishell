@@ -6,31 +6,43 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 09:19:12 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/15 17:49:40 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/16 13:43:16 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int		ft_do_process(char *envp[], char *cmd)
+int		ft_do_process(char *envp[], char *cmd, int **pipesfd, int j)
 {
 	int		i;
 	char	**path;
 	char	**cmd_argument;
+	(void)pipesfd;
+	(void)j;
 
 	// fprintf(stderr, "command = %s et identifiant %d\n", cmd, id);
 	i = 0;
 	cmd_argument = ft_split(cmd, ' ');
 	path = ft_get_path(envp);
+	// if (j % 2 == 0)
+	// {
+	// 	close(pipefd[0][0]);
+	// 	close(pipefd[0][1]);
+	// }
+	// else
+	// {
+	// 	close(pipefd[1][0]);
+	// 	close(pipefd[1][1]);
+	// }
 	// fprintf(stderr, "je suis dans process voici mon identifiant %d et mon i avant la boucle %d\n", id, i);
 	while (path[i])
 	{
 		path[i] = str_join_free(path[i], "/");
 		path[i] = str_join_free(path[i], cmd_argument[0]);
 		// fprintf(stderr, "je suis avant execve ma commande %s, et path %s\n", cmd, path[i]);
-		// fprintf(stderr, "je suis avant execve (%d)\n", id);
+		// fprintf(stderr, "je suis avant execve \n");
 		execve(path[i], cmd_argument, envp);
-		// fprintf(stderr, "je suis apres execve (%d)\n", id);
+		// fprintf(stderr, "je suis apres execve \n");
 		i++;
 	}
 	// fprintf(stderr, "je sors de ma boucle\n");

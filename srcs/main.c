@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 17:00:57 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/15 13:24:13 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/16 11:32:59 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,30 +35,27 @@
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	char **new_argv;
+	char	**new_argv;
 	int		new_argc;
 	(void)argc;
-	// (void)file;
-	// (void)envp;
 	// int	file[2];
 
-	new_argv = NULL;
 	// file[0] = ft_create_fd(argv[1], O_RDONLY);
 	// file[1] = ft_create_fd(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC);
 	// if (file[0] == -1 || file[1] == -1)
 		// return (1);
-	int i = 0;
-	// fprintf(stderr, "petit calcul 0 modulo = %d\n", (0 % 2));
+	new_argv = NULL;
+	// int i = 0;
 	new_argv = get_new_argv(argv);
 	new_argc = found_max(new_argv);
-	while (new_argv[i])
-	{
-		fprintf(stderr, "%s\n", new_argv[i]);
-		i++;
-	}
+	// while (new_argv[i])
+	// {
+	// 	fprintf(stderr, "%s\n", new_argv[i]);
+	// 	i++;
+	// }
 	ft_pipex(new_argv, envp, new_argc);
 	ft_freedb_essaie(new_argv);
-	fprintf(stderr, "FIN DU PROGRAMME\n");
+	// fprintf(stderr, "FIN DU PROGRAMME\n");
 	return (0);
 }
 
@@ -118,7 +115,6 @@ int	verif_arg_fd(char *argv[], int i)
 	fd = open(argv[i], O_RDONLY, 0644);
 	if (fd < 0)
 		return (-1);
-	// close(fd);
 	return (fd);
 }
 

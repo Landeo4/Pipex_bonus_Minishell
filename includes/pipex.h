@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 16:39:00 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/15 17:49:58 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/16 12:43:34 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,11 +77,11 @@ char	*ft_strjoin(char *s1, char *s2);
 //								Pipex
 // =======================================================================
 
-int		ft_parsing(int argc);
+int     ft_parsing(int argc);
 int		ft_verif_error(char *buff, int fd[]);
 int		ft_create_fd(char *argv, int flag);
 char	*ft_get_pass(char *argv, char *envp, int i);
-int		ft_do_process(char *envp[], char *cmd);
+int		ft_do_process(char *envp[], char *cmd, int **pipefd, int i);
 char	**ft_take_line(char **big, char *little);
 void	ft_freedb(char **str);
 void	ft_execute(char	*cmd, char	**env);
@@ -98,16 +98,17 @@ char	**get_new_argv(char *argv[]);
 int		verif_arg_fd(char *argv[], int i);
 int		len_fd_tab(char **str, int i);
 
-void	ft_freedb_essaie(char *new_argv[]);
-int     ft_pipex(char *argv[], char *env[], int argc);
-int     process(char *cmd, char *env[], int token);
+void    ft_freedb_essaie(char *new_argv[]);
+int		ft_pipex(char *argv[], char *env[], int argc);
+int		process(char *cmd, char *env[], int token);
 
-int	child_process_middle(int **pipesfd, char **argv, char **env, int i);
-int	child_process_unpair(int **pipesfd, char **argv, char **env, int i);
-int	child_process_in(int **pipesfd, char **argv, char **env,int i);
-int	child_process_out(int **pipesfd, char **argv, char **env, int i);
-int	parent_process(int **pipefd, char *argv[], int i, pid_t pid);
-int **alloc_pipe(int i, int **pipefd);
+int		child_process_middle(int **pipesfd, char **argv, char **env, int i);
+int		child_process_unpair(int **pipesfd, char **argv, char **env, int i);
+int		child_process_in(int **pipesfd, char **argv, char **env,int i);
+int		child_process_out(int **pipesfd, char **argv, char **env, int i);
+int		parent_process(int **pipefd);
+int		**alloc_pipe(int i, int **pipefd);
+int		child_process_single(int **pipesfd, char **argv, char **env, int i);
 
 
 #endif
