@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 15:58:51 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/16 14:08:24 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/16 14:51:55 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,10 +93,10 @@ int	child_process_single(int **pipesfd, char **argv, char **env, int i)
 	// (void)argv;
 	// (void)env;
 	// fprintf(stderr, "je suis dans out %s %d\n", argv[i], i);
-	if (dup2(STDIN_FILENO, STDIN_FILENO) < 0)
-		return (printf("problem with dup2"), -1);
-	if (dup2(STDOUT_FILENO, 1) < 0)
-		return (printf("problem with dup2"), -1);
+	// if (dup2(STDIN_FILENO, STDIN_FILENO) < 0)
+	// 	return (printf("problem with dup2"), -1);
+	// if (dup2(STDOUT_FILENO, 1) < 0)
+	// 	return (printf("problem with dup2"), -1);
 	// close(pipesfd[0][1]);
 	// close(pipesfd[0][0]);
 	// close(pipesfd[1][0]);
