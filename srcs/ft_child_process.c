@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 15:58:51 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/16 14:51:55 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/16 14:59:14 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ int	child_process_out(int **pipesfd, char **argv, char **env, int i)
 
 int	child_process_single(int **pipesfd, char **argv, char **env, int i)
 {
+	(void)pipesfd;
 	// (void)i;
 	// (void)argv;
 	// (void)env;

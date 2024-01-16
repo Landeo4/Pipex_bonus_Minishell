@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:32:11 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/16 14:29:37 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/16 14:59:30 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ int	ft_pipex(char *argv[], char *env[], int argc)
 	pipefd = NULL;
 	if (argc == 1)
 	{
+		(void)pipefd;
 		fprintf(stderr, "je passe par la\n");
 		// pipefd = alloc_pipe(i, pipefd);
 		// if (!pipefd[1] || !pipefd[0])
