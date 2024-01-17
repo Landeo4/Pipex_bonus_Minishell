@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 09:19:12 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/17 17:41:26 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/17 18:24:53 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,11 +91,18 @@ char	*ft_do_process(char *envp[], char *cmd, int **pipesfd, int j)
 		fprintf(stderr, "Avant execve : cmd_tout_cours = %s\n", cmd);
 		fprintf(stderr, "Avant execve : i = %d\n", i);
 		if (access(buf2, 0) == 0)
+		{
+			fprintf(stderr, "path = %s\n", buf2);
+			free(path);
+			free(buf);
 			return (buf2);
+		}
 		free(buf2);
 		free(buf);
 		i++;
 	}
+	free(path);
+	fprintf(stderr, "tout a echouer saaaaaaaad\n");
 	return (NULL);
 }
 

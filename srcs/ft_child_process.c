@@ -6,85 +6,114 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 15:58:51 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/17 17:41:50 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/17 18:28:53 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-// int	child_process_in(int **pipesfd, char **argv, char **env, int i)
-// {
-// 	fprintf(stderr, "in %s %d\n", argv[i], i);
-// 	close(pipesfd[0][1]);
-// 	close(pipesfd[1][0]);
-// 	close(pipesfd[0][1]);
-// 	if (dup2(STDIN_FILENO, STDIN_FILENO) < 0)
-// 		return (printf("problem with dup2"), -1);
-// 	if (dup2(pipesfd[1][1], STDOUT_FILENO) < 0)
-// 		return (printf("problem with dup2"), -1);
-// 	close(pipesfd[1][1]);
-// 	ft_do_process(env, argv[i], pipesfd, i);
-// 	return (0);
-// }
+int	child_process_in(int **pipesfd, char **argv, char **env, int i)
+{
+	char		**cmd_argument;
+	char		*cmd;
 
-// int	child_process_middle(int **pipesfd, char **argv, char **env, int i)
-// {
-// 	fprintf(stderr, "mid %s %d\n", argv[i], i);
-// 	if (i % 2 == 1)
-// 	{
-// 		// close(pipesfd[1][0]);
-// 		// close(pipesfd[0][1]);
-// 		if (dup2(pipesfd[0][0], STDIN_FILENO) < 0)
-// 			return (printf("problem with dup2"), -1);
-// 		close(pipesfd[0][0]);
-// 		// close(pipesfd[1].pipes[0])
-// 		if (dup2(pipesfd[1][1], STDOUT_FILENO) < 0)
-// 			return (printf("problem with dup2"), -1);
-// 		close(pipesfd[1][1]);
-// 	}
-// 	else
-// 	{
-// 		// close(pipesfd[1][1]);
-// 		// close(pipesfd[0][0]);
-// 		if (dup2(pipesfd[1][0], STDIN_FILENO) < 0)
-// 			return (printf("problem with dup2"), -1);
-// 		close(pipesfd[1][0]);
-// 		// close(pipesfd[0].pipes[0])
-// 		if (dup2(pipesfd[0][1], STDOUT_FILENO) < 0)
-// 			return (printf("problem with dup2"), -1);
-// 		close(pipesfd[0][1]);
-// 	}
-// 	ft_do_process(env, argv[i], pipesfd, i);
-// 	return (0);
-// }
+	fprintf(stderr, "in %s %d\n", argv[i], i);
+	if (dup2(STDIN_FILENO, STDIN_FILENO) < 0)
+		return (printf("problem with dup2"), -1);
+	if (dup2(pipesfd[1][1], STDOUT_FILENO) < 0)
+		return (printf("problem with dup2"), -1);
+	close(pipesfd[1][1]);
+	cmd = ft_do_process(env, argv[i], pipesfd, i);
+	cmd_argument = ft_split(argv[i], ' ');
+	execve(cmd, cmd_argument, env);
+	free(cmd);
+	free(cmd_argument);
+	return (0);
+}
 
-// int	child_process_out(int **pipesfd, char **argv, char **env, int i)
-// {
-// 	fprintf(stderr, "je suis dans out %s %d\n", argv[i], i);
-// 	if (i % 2 == 1)
-// 	{
-// 		// close(pipesfd[0][0]);
-// 		// close(pipesfd[0][1]);
-// 		// close(pipesfd[1][0]);
-// 		// close(pipesfd[1][1]);
-// 		if (dup2(pipesfd[1][0], 0) < 0)
-// 			return (free(pipesfd), printf("problem with dup2"), -1);
-// 		close(pipesfd[1][0]);
-// 		if (dup2(STDOUT_FILENO, 1) < 0)
-// 			return (free(pipesfd), printf("problem with dup2"), -1);
-// 	}
-// 	else
-// 	{
-// 		close(pipesfd[0][1]);
-// 		if (dup2(pipesfd[0][0], 0) < 0)
-// 			return (free(pipesfd), printf("problem with dup2"), -1);
-// 		close(pipesfd[0][0]);
-// 		if (dup2(STDOUT_FILENO, 1) < 0)
-// 			return (free(pipesfd[0]), free(pipesfd[1]), free(pipesfd), printf("problem with dup2"), -1);
-// 	}
-// 	ft_do_process(env, argv[i], pipesfd, i);
-// 	return (0);
-// }
+int	child_process_middle(int **pipesfd, char **argv, char **env, int i)
+{
+	char		**cmd_argument;
+	char		*cmd;
+
+	fprintf(stderr, "mid %s %d\n", argv[i], i);
+	if (i % 2 == 1)
+	{
+		// close(pipesfd[1][0]);
+		// close(pipesfd[0][1]);
+		if (dup2(pipesfd[0][0], STDIN_FILENO) < 0)
+			return (printf("problem with dup2"), -1);
+		close(pipesfd[0][0]);
+		// close(pipesfd[1].pipes[0])
+		if (dup2(pipesfd[1][1], STDOUT_FILENO) < 0)
+			return (printf("problem with dup2"), -1);
+		close(pipesfd[1][1]);
+	}
+	else
+	{
+		// close(pipesfd[1][1]);
+		// close(pipesfd[0][0]);
+		if (dup2(pipesfd[1][0], STDIN_FILENO) < 0)
+			return (printf("problem with dup2"), -1);
+		close(pipesfd[1][0]);
+		// close(pipesfd[0].pipes[0])
+		if (dup2(pipesfd[0][1], STDOUT_FILENO) < 0)
+			return (printf("problem with dup2"), -1);
+		close(pipesfd[0][1]);
+	}
+	cmd = ft_do_process(env, argv[i], pipesfd, i);
+	cmd_argument = ft_split(argv[i], ' ');
+	execve(cmd, cmd_argument, env);
+	free(cmd);
+	free(cmd_argument);
+	return (0);
+}
+
+int	child_process_out(int **pipesfd, char **argv, char **env, int i)
+{
+	char		**cmd_argument;
+	char		*cmd;
+
+	fprintf(stderr, "je suis dans out %s %d\n", argv[i], i);
+	if (i % 2 == 1)
+	{
+		// close(pipesfd[0][0]);
+		// close(pipesfd[0][1]);
+		// close(pipesfd[1][0]);
+		// close(pipesfd[1][1]);
+		if (dup2(pipesfd[1][0], 0) < 0)
+			return (free(pipesfd), printf("problem with dup2"), -1);
+		close(pipesfd[1][0]);
+		if (dup2(STDOUT_FILENO, 1) < 0)
+			return (free(pipesfd), printf("problem with dup2"), -1);
+	}
+	else
+	{
+		close(pipesfd[0][1]);
+		if (dup2(pipesfd[0][0], 0) < 0)
+			return (free(pipesfd), printf("problem with dup2"), -1);
+		close(pipesfd[0][0]);
+		if (dup2(STDOUT_FILENO, 1) < 0)
+			return (free(pipesfd[0]), free(pipesfd[1]), free(pipesfd), printf("problem with dup2"), -1);
+	}
+	cmd = ft_do_process(env, argv[i], pipesfd, i);
+	cmd_argument = ft_split(argv[i], ' ');
+	if (!cmd || !cmd_argument)
+	{
+		fprintf(stderr, "donc probleme avec les cmd\n");
+		free(cmd);
+		free(cmd_argument);
+		return (-1);
+	}
+	// close(pipesfd[0][1]);
+	// close(pipesfd[1][1]);
+	// close(pipesfd[1][0]);
+	// close(pipesfd[0][0]);
+	execve(cmd, cmd_argument, env);
+	free(cmd);
+	free(cmd_argument);
+	return (0);
+}
 
 int	child_process_single(int **pipesfd, char **argv, char **env, int i)
 {
@@ -105,9 +134,9 @@ int	child_process_single(int **pipesfd, char **argv, char **env, int i)
 	// close(pipesfd[0][0]);
 	// close(pipesfd[1][0]);
 	// close(pipesfd[1][1]);
+	// fprintf(stderr, "Avant execve : cmd_tout_cours = %s\n", cmd);
 	cmd = ft_do_process(env, argv[1], pipesfd, i);
 	cmd_argument = ft_split(argv[1], ' ');
-	// fprintf(stderr, "Avant execve : cmd_tout_cours = %s\n", cmd);
 	execve(cmd, cmd_argument, env);
 	return (0);
 }

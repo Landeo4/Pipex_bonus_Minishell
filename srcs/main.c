@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 17:00:57 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/17 16:19:58 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/17 18:09:03 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	char	**new_argv;
 	int		new_argc;
-	int		**pipefd;
+	// int		**pipefd;
 	(void)argc;
 	(void)new_argc;
 	// int	file[2];
@@ -49,35 +49,37 @@ int	main(int argc, char *argv[], char *envp[])
 	new_argv = NULL;
 	// int i = 0;
 	new_argv = get_new_argv(argv);
-	// new_argc = found_max(new_argv);
+	new_argc = found_max(new_argv);
+	fprintf(stderr, "%d\n", new_argc);
+	ft_pipex(new_argv, envp, new_argc);
+	ft_freedb_essaie(new_argv);
+	return (0);
 	// while (new_argv[i])
 	// {
 	// 	fprintf(stderr, "%s\n", new_argv[i]);
 	// 	i++;
 	// }
 	// fprintf(stderr, "==avant pipex==\n");
-	if (argc == 2)
-	{
-		pipefd = NULL;
-		(void)pipefd;
-		// pipefd = alloc_pipe(0, pipefd);
-		// if (!pipefd[1] || !pipefd[0])
-		// 	return (free(pipefd), -1);
-		// fprintf(stderr, "je passe par la et voici mon argv %s\n", new_argv[0]);
-		// fprintf(stderr, "je passe par la et voici mon argv %s\n", argv[1]);
-		fprintf(stderr, "je passe bien par single\n");
-		child_process_single(pipefd, argv, envp, 0);
-		ft_freedb_essaie(new_argv);
-		return (0);
-	}
-	else
-	{
-		fprintf(stderr, "je passe bien par MUUUULTIIII\n");
-		// ft_pipex(new_argv, envp, new_argc);
-	}
-	ft_freedb_essaie(new_argv);
+	// if (argc == 2)
+	// {
+	// 	pipefd = NULL;
+	// 	(void)pipefd;
+	// 	// pipefd = alloc_pipe(0, pipefd);
+	// 	// if (!pipefd[1] || !pipefd[0])
+	// 	// 	return (free(pipefd), -1);
+	// 	// fprintf(stderr, "je passe par la et voici mon argv %s\n", new_argv[0]);
+	// 	// fprintf(stderr, "je passe par la et voici mon argv %s\n", argv[1]);
+	// 	fprintf(stderr, "je passe bien par single\n");
+	// 	child_process_single(pipefd, argv, envp, 0);
+	// 	ft_freedb_essaie(new_argv);
+	// 	return (0);
+	// }
+	// else
+	// {
+	// 	fprintf(stderr, "je passe bien par MUUUULTIIII\n");
+	// 	// ft_pipex(new_argv, envp, new_argc);
+	// }
 	// fprintf(stderr, "FIN DU PROGRAMME\n");
-	return (0);
 }
 
 void	ft_freedb_essaie(char *new_argv[])
