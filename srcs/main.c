@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 17:00:57 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/16 18:41:30 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/17 15:54:53 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,19 +54,26 @@ int	main(int argc, char *argv[], char *envp[])
 	// 	fprintf(stderr, "%s\n", new_argv[i]);
 	// 	i++;
 	// }
-	fprintf(stderr, "==avant pipex==\n");
+	// fprintf(stderr, "==avant pipex==\n");
 	if (argc == 2)
 	{
 		pipefd = NULL;
-		pipefd = alloc_pipe(0, pipefd);
-		if (!pipefd[1] || !pipefd[0])
-			return (free(pipefd), -1);
-		fprintf(stderr, "je passe par la\n");
-		child_process_single(pipefd, new_argv, envp, 0);
+		(void)pipefd;
+		// pipefd = alloc_pipe(0, pipefd);
+		// if (!pipefd[1] || !pipefd[0])
+		// 	return (free(pipefd), -1);
+		// fprintf(stderr, "je passe par la et voici mon argv %s\n", new_argv[0]);
+		// fprintf(stderr, "je passe par la et voici mon argv %s\n", argv[1]);
+		fprintf(stderr, "je passe bien par single\n");
+		child_process_single(pipefd, argv, envp, 0);
+		ft_freedb_essaie(new_argv);
 		return (0);
 	}
 	else
+	{
+		fprintf(stderr, "je passe bien par MUUUULTIIII\n");
 		ft_pipex(new_argv, envp, new_argc);
+	}
 	ft_freedb_essaie(new_argv);
 	// fprintf(stderr, "FIN DU PROGRAMME\n");
 	return (0);

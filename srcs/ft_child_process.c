@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 15:58:51 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/16 14:59:14 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/17 15:53:31 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,7 @@ int	child_process_in(int **pipesfd, char **argv, char **env, int i)
 	if (dup2(pipesfd[1][1], STDOUT_FILENO) < 0)
 		return (printf("problem with dup2"), -1);
 	close(pipesfd[1][1]);
-	if (ft_do_process(env, argv[i], pipesfd, i) == -1)
-		return (free(pipesfd[0]), free(pipesfd[1]), free(pipesfd), -1);
+	ft_do_process(env, argv[i], pipesfd, i);
 	return (0);
 }
 
@@ -90,6 +89,10 @@ int	child_process_out(int **pipesfd, char **argv, char **env, int i)
 int	child_process_single(int **pipesfd, char **argv, char **env, int i)
 {
 	(void)pipesfd;
+	char		**cmd_argument;
+	char		*cmd;
+
+	cmd_argument = NULL;
 	// (void)i;
 	// (void)argv;
 	// (void)env;
@@ -102,7 +105,10 @@ int	child_process_single(int **pipesfd, char **argv, char **env, int i)
 	// close(pipesfd[0][0]);
 	// close(pipesfd[1][0]);
 	// close(pipesfd[1][1]);
-	ft_do_process(env, argv[i], pipesfd, i);
+	cmd = ft_do_process(env, argv[1], pipesfd, i);
+	cmd_argument = ft_split(argv[1], ' ');
+	fprintf(stderr, "Avant execve : cmd_tout_cours = %s\n", cmd);
+	execve(cmd, cmd_argument, env);
 	return (0);
 }
 

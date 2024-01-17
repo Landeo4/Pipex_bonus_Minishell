@@ -6,17 +6,19 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 09:19:12 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/16 13:43:16 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/17 15:53:01 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int		ft_do_process(char *envp[], char *cmd, int **pipesfd, int j)
+/*int		ft_do_process(char *envp[], char *cmd, int **pipesfd, int j)
 {
 	int		i;
 	char	**path;
 	char	**cmd_argument;
+	char	*buf;
+	char	*buf2;
 	(void)pipesfd;
 	(void)j;
 
@@ -24,33 +26,77 @@ int		ft_do_process(char *envp[], char *cmd, int **pipesfd, int j)
 	i = 0;
 	cmd_argument = ft_split(cmd, ' ');
 	path = ft_get_path(envp);
-	// if (j % 2 == 0)
-	// {
-	// 	close(pipefd[0][0]);
-	// 	close(pipefd[0][1]);
-	// }
-	// else
-	// {
-	// 	close(pipefd[1][0]);
-	// 	close(pipefd[1][1]);
-	// }
 	// fprintf(stderr, "je suis dans process voici mon identifiant %d et mon i avant la boucle %d\n", id, i);
 	while (path[i])
 	{
-		path[i] = str_join_free(path[i], "/");
-		path[i] = str_join_free(path[i], cmd_argument[0]);
+		buf = ft_strjoin(path[i], "/");
+		// path[i] = str_join_free(path[i], cmd_argument[0]);
+		if (cmd[0] == '/')
+			buf2 = ft_strjoin(path[i], cmd);
+		else
+			buf2 = ft_strjoin(buf, cmd);
 		// fprintf(stderr, "je suis avant execve ma commande %s, et path %s\n", cmd, path[i]);
-		// fprintf(stderr, "je suis avant execve \n");
-		execve(path[i], cmd_argument, envp);
+		fprintf(stderr, "--------------------\n");
+		fprintf(stderr, "Avant execve : path[i] = %s\n", path[i]);
+		fprintf(stderr, "Avant execve : cmd_tout_cours = %s\n", cmd);
+		fprintf(stderr, "Avant execve : cmd_argument = %s\n", cmd_argument[0]);
+		fprintf(stderr, "Avant execve : i = %d\n", i);
+		if (access(buf2, 0) == 0)
+		{
+			int j = 0;
+			fprintf(stderr, "access est ok======\n donc voici mes args\npath[i] %s\n", path[i]);
+			while (cmd_argument[j])
+			{
+				fprintf(stderr, "cmd_arg = %s\n", cmd_argument[j]);
+				j++;
+			}
+			fprintf(stderr, "===============\n");
+			if (execve(path[i], cmd_argument, envp) == -1)
+			{
+				perror("execve a echouer c'est dommage");
+				fprintf(stderr, "Path: %s\n", path[i]);
+			}
+		}
+		free(buf);
+		free(buf2);
+		free(path[i]);
+		fprintf(stderr, "--------------------\n");
 		// fprintf(stderr, "je suis apres execve \n");
 		i++;
 	}
 	// fprintf(stderr, "je sors de ma boucle\n");
-	ft_freedb(path);
-	execve(cmd_argument[0], cmd_argument, envp);
+	free(path);
+	// execve(cmd_argument[0], cmd_argument, envp);
 	ft_freedb(cmd_argument);
-	fprintf(stderr, "command invalid\n");
+	fprintf(stderr, "execve a echoue je suis a la fin de la fonction: %s\n", strerror(errno));
 	return (-1);
+}*/
+
+char	*ft_do_process(char *envp[], char *cmd, int **pipesfd, int j)
+{
+	int		i;
+	char	**path;
+	char	*buf;
+	char	*buf2;
+	(void)pipesfd;
+	(void)j;
+
+	i = 0;
+	path = ft_get_path(envp);
+	while (path[i])
+	{
+		buf = ft_strjoin(path[i], "/");
+		buf2 = ft_strjoin(buf, cmd);
+		fprintf(stderr, "Avant execve : path[i] = %s\n", path[i]);
+		fprintf(stderr, "Avant execve : cmd_tout_cours = %s\n", cmd);
+		fprintf(stderr, "Avant execve : i = %d\n", i);
+		if (access(buf2, 0) == 0)
+			return (buf2);
+		free(buf2);
+		free(buf);
+		i++;
+	}
+	return (NULL);
 }
 
 char	**ft_get_path(char **env)
