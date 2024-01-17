@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 17:00:57 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/17 19:19:31 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/17 19:52:14 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ int	main(int argc, char *argv[], char *envp[])
 	}
 	fprintf(stderr, "%d\n", new_argc);
 	ft_pipex(new_argv, envp, new_argc);
+	waitpid(-1, NULL, 0);
 	ft_freedb_essaie(new_argv);
 	return (0);
 	// fprintf(stderr, "==avant pipex==\n");

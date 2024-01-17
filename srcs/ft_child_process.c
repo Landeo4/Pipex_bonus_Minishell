@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 15:58:51 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/17 19:17:18 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/17 19:43:21 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,21 @@ int	child_process_in(int **pipesfd, char **argv, char **env, int i)
 	char		*cmd;
 
 	fprintf(stderr, "in %s %d\n", argv[i], i);
+	// fprintf(stderr, "VERIFICATOPN DANS INN!!!!!\n");
+	// int j = 0;
+	// while (env[j])
+	// {
+	// 	fprintf(stderr, "%s\n", env[j]);
+	// 	j++;
+	// }
+	// j = 0;
+	// fprintf(stderr, "MAINTENANT ARGV\n");
+	// while (argv[j])
+	// {
+	// 	fprintf(stderr, "%s\n", argv[j]);
+	// 	j++;
+	// }
+	// fprintf(stderr, "FIN DES VERIFICATOPN DANS INN!!!!!\n");
 	if (dup2(STDIN_FILENO, STDIN_FILENO) < 0)
 		return (printf("problem with dup2"), -1);
 	if (dup2(pipesfd[1][1], STDOUT_FILENO) < 0)
