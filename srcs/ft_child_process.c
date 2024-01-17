@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 15:58:51 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/17 18:28:53 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/17 19:17:18 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	child_process_in(int **pipesfd, char **argv, char **env, int i)
 	cmd = ft_do_process(env, argv[i], pipesfd, i);
 	cmd_argument = ft_split(argv[i], ' ');
 	execve(cmd, cmd_argument, env);
+	perror("execve");
 	free(cmd);
 	free(cmd_argument);
 	return (0);
@@ -81,14 +82,18 @@ int	child_process_out(int **pipesfd, char **argv, char **env, int i)
 		// close(pipesfd[0][1]);
 		// close(pipesfd[1][0]);
 		// close(pipesfd[1][1]);
+		fprintf(stderr, "JE SUIS DANS I %% 2 == 1\n");
 		if (dup2(pipesfd[1][0], 0) < 0)
 			return (free(pipesfd), printf("problem with dup2"), -1);
 		close(pipesfd[1][0]);
+		// close(pipesfd[0][1]);
+		// close(pipesfd[0][0]);
 		if (dup2(STDOUT_FILENO, 1) < 0)
 			return (free(pipesfd), printf("problem with dup2"), -1);
 	}
 	else
 	{
+		fprintf(stderr, "JE SUIS DANS I %% 2 == 0\n");
 		close(pipesfd[0][1]);
 		if (dup2(pipesfd[0][0], 0) < 0)
 			return (free(pipesfd), printf("problem with dup2"), -1);
@@ -98,18 +103,22 @@ int	child_process_out(int **pipesfd, char **argv, char **env, int i)
 	}
 	cmd = ft_do_process(env, argv[i], pipesfd, i);
 	cmd_argument = ft_split(argv[i], ' ');
-	if (!cmd || !cmd_argument)
+	if (!cmd)
 	{
-		fprintf(stderr, "donc probleme avec les cmd\n");
+		fprintf(stderr, "donc probleme avec cmd\n");
 		free(cmd);
 		free(cmd_argument);
 		return (-1);
 	}
-	// close(pipesfd[0][1]);
-	// close(pipesfd[1][1]);
-	// close(pipesfd[1][0]);
-	// close(pipesfd[0][0]);
+	else if (!cmd_argument)
+	{
+		fprintf(stderr, "donc probleme avec cmd_arg\n");
+		free(cmd);
+		free(cmd_argument);
+		return (-1);
+	}
 	execve(cmd, cmd_argument, env);
+	perror("execve");
 	free(cmd);
 	free(cmd_argument);
 	return (0);

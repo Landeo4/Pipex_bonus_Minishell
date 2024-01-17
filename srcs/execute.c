@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 09:19:12 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/17 18:24:53 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/17 18:51:45 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,12 @@ char	*ft_do_process(char *envp[], char *cmd, int **pipesfd, int j)
 	(void)j;
 
 	i = 0;
+	// int	c = 0;
+	// while (envp[c])
+	// {
+	// 	fprintf(stderr, "%s\n", envp[c]);
+	// 	c++;
+	// }
 	path = ft_get_path(envp);
 	while (path[i])
 	{

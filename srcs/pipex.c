@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:32:11 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/17 18:06:48 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/17 19:25:15 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,30 +73,35 @@ int	ft_pipex(char *argv[], char *env[], int argc)
 					return (free(pipefd[0]), free(pipefd[1]), free(pipefd),-1);
 			}
 		}
-		if (i % 2 == 0)
-		{
-			close(pipefd[0][0]);
-			close(pipefd[0][1]);
-		}
-		else
-		{
-			close(pipefd[1][0]);
-			close(pipefd[1][1]);
-		}
+		// if (i % 2 == 0)
+		// {
+		// 	close(pipefd[0][0]);
+		// 	close(pipefd[0][1]);
+		// }
+		// else
+		// {
+		// 	close(pipefd[1][0]);
+		// 	close(pipefd[1][1]);
+		// }
 		i++;
 	}
 	fprintf(stderr, "HELOOOOO\n");
 	// if (pid > 0)
 		// parent_process(pipefd);
+	int	j = 0;
 	int status = 0;
 	close(pipefd[0][0]);
 	close(pipefd[0][1]);
 	close(pipefd[1][0]);
 	close(pipefd[1][1]);
+	while (j < argc)
+	{
+		waitpid(0, &status, 0);
+		j++;
+	}
 	free(pipefd[0]);
 	free(pipefd[1]);
 	free(pipefd);
-	waitpid(-1, &status, 0);
 	return (0);
 }
 

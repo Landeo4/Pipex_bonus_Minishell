@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 17:00:57 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/17 18:09:03 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/17 19:19:31 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,16 @@ int	main(int argc, char *argv[], char *envp[])
 	// int i = 0;
 	new_argv = get_new_argv(argv);
 	new_argc = found_max(new_argv);
+	int i = 0;
+	while (new_argv[i])
+	{
+		fprintf(stderr, "%s\n", new_argv[i]);
+		i++;
+	}
 	fprintf(stderr, "%d\n", new_argc);
 	ft_pipex(new_argv, envp, new_argc);
 	ft_freedb_essaie(new_argv);
 	return (0);
-	// while (new_argv[i])
-	// {
-	// 	fprintf(stderr, "%s\n", new_argv[i]);
-	// 	i++;
-	// }
 	// fprintf(stderr, "==avant pipex==\n");
 	// if (argc == 2)
 	// {
