@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 17:00:57 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/17 15:54:53 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/17 16:19:58 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	main(int argc, char *argv[], char *envp[])
 	int		new_argc;
 	int		**pipefd;
 	(void)argc;
+	(void)new_argc;
 	// int	file[2];
 
 	// file[0] = ft_create_fd(argv[1], O_RDONLY);
@@ -48,7 +49,7 @@ int	main(int argc, char *argv[], char *envp[])
 	new_argv = NULL;
 	// int i = 0;
 	new_argv = get_new_argv(argv);
-	new_argc = found_max(new_argv);
+	// new_argc = found_max(new_argv);
 	// while (new_argv[i])
 	// {
 	// 	fprintf(stderr, "%s\n", new_argv[i]);
@@ -72,7 +73,7 @@ int	main(int argc, char *argv[], char *envp[])
 	else
 	{
 		fprintf(stderr, "je passe bien par MUUUULTIIII\n");
-		ft_pipex(new_argv, envp, new_argc);
+		// ft_pipex(new_argv, envp, new_argc);
 	}
 	ft_freedb_essaie(new_argv);
 	// fprintf(stderr, "FIN DU PROGRAMME\n");

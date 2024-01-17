@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:32:11 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/16 19:53:22 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/17 16:19:40 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,120 +38,120 @@
 */
 // faire plusieurs pipe de maniere intelligente
 
-int	ft_pipex(char *argv[], char *env[], int argc)
-{
-	pid_t		pid;
-	int			**pipefd;
-	int			i;
+// int	ft_pipex(char *argv[], char *env[], int argc)
+// {
+// 	pid_t		pid;
+// 	int			**pipefd;
+// 	int			i;
 
-	i = 0;
-	// fprintf(stderr, "argc = %d\n", argc);
-	pipefd = NULL;
-	while (i < argc)
-	{
-		pipefd = alloc_pipe(i, pipefd);
-		if (!pipefd[1] || !pipefd[0])
-			return (free(pipefd), -1);
-		pid = fork();
-		if (pid < 0)
-			return (printf("erreur de fork\n"), 1);
-		if (pid == 0)
-		{
-			if (i == 0)
-			{
-				if (child_process_in(pipefd, argv, env, i) == -1)
-					return (free(pipefd[0]), free(pipefd[1]), free(pipefd),-1);
-			}
-			else if (i == argc - 1)
-			{
-				if (child_process_out(pipefd, argv, env, i) == -1)
-					return (free(pipefd[0]), free(pipefd[1]), free(pipefd),-1);
-			}
-			else
-			{
-				if (child_process_middle(pipefd, argv, env, i) == -1)
-					return (free(pipefd[0]), free(pipefd[1]), free(pipefd),-1);
-			}
-		}
-		if (i % 2 == 0)
-		{
-			close(pipefd[0][0]);
-			close(pipefd[0][1]);
-		}
-		else
-		{
-			close(pipefd[1][0]);
-			close(pipefd[1][1]);
-		}
-		i++;
-	}
-	fprintf(stderr, "HELOOOOO\n");
-	if (pid > 0)
-		parent_process(pipefd);
-	return (0);
-}
+// 	i = 0;
+// 	// fprintf(stderr, "argc = %d\n", argc);
+// 	pipefd = NULL;
+// 	while (i < argc)
+// 	{
+// 		pipefd = alloc_pipe(i, pipefd);
+// 		if (!pipefd[1] || !pipefd[0])
+// 			return (free(pipefd), -1);
+// 		pid = fork();
+// 		if (pid < 0)
+// 			return (printf("erreur de fork\n"), 1);
+// 		if (pid == 0)
+// 		{
+// 			if (i == 0)
+// 			{
+// 				if (child_process_in(pipefd, argv, env, i) == -1)
+// 					return (free(pipefd[0]), free(pipefd[1]), free(pipefd),-1);
+// 			}
+// 			else if (i == argc - 1)
+// 			{
+// 				if (child_process_out(pipefd, argv, env, i) == -1)
+// 					return (free(pipefd[0]), free(pipefd[1]), free(pipefd),-1);
+// 			}
+// 			else
+// 			{
+// 				if (child_process_middle(pipefd, argv, env, i) == -1)
+// 					return (free(pipefd[0]), free(pipefd[1]), free(pipefd),-1);
+// 			}
+// 		}
+// 		if (i % 2 == 0)
+// 		{
+// 			close(pipefd[0][0]);
+// 			close(pipefd[0][1]);
+// 		}
+// 		else
+// 		{
+// 			close(pipefd[1][0]);
+// 			close(pipefd[1][1]);
+// 		}
+// 		i++;
+// 	}
+// 	fprintf(stderr, "HELOOOOO\n");
+// 	if (pid > 0)
+// 		parent_process(pipefd);
+// 	return (0);
+// }
 
-int	**alloc_pipe(int i, int **pipefd)
-{
-	if (i == 0)
-	{
-		pipefd = malloc(sizeof(int *) * 2);
-		if (!pipefd)
-			return (fprintf(stderr, "probleme happend in alloc_pipe"), NULL);
-		pipefd[0] = malloc(sizeof(int) * 2);
-		pipefd[1] = malloc(sizeof(int) * 2);
-		if (!pipefd[0] || !pipefd[1])
-		{
-			free(pipefd[0]);
-			free(pipefd[1]);
-			return (pipefd);
-		}
-		pipe(pipefd[0]);
-		pipe(pipefd[1]);
-	}
-	else if (i % 2 == 0)
-	{
-		// free(pipefd[0]);
-		// pipefd[0] = malloc(sizeof(int) * 2);
-		if (!pipefd[0] || !pipefd[1])
-		{
-			free(pipefd[0]);
-			free(pipefd[1]);
-			return (pipefd);
-		}
-		pipe(pipefd[0]);
-	}
-	else
-	{
-		// free(pipefd[1]);
-		// pipefd[1] = malloc(sizeof(int) * 2);
-		if (!pipefd[0] || !pipefd[1])
-		{
-			free(pipefd[0]);
-			free(pipefd[1]);
-			return (pipefd);
-		}
-		pipe(pipefd[1]);
-	}
-	return (pipefd);
-}
+// int	**alloc_pipe(int i, int **pipefd)
+// {
+// 	if (i == 0)
+// 	{
+// 		pipefd = malloc(sizeof(int *) * 2);
+// 		if (!pipefd)
+// 			return (fprintf(stderr, "probleme happend in alloc_pipe"), NULL);
+// 		pipefd[0] = malloc(sizeof(int) * 2);
+// 		pipefd[1] = malloc(sizeof(int) * 2);
+// 		if (!pipefd[0] || !pipefd[1])
+// 		{
+// 			free(pipefd[0]);
+// 			free(pipefd[1]);
+// 			return (pipefd);
+// 		}
+// 		pipe(pipefd[0]);
+// 		pipe(pipefd[1]);
+// 	}
+// 	else if (i % 2 == 0)
+// 	{
+// 		// free(pipefd[0]);
+// 		// pipefd[0] = malloc(sizeof(int) * 2);
+// 		if (!pipefd[0] || !pipefd[1])
+// 		{
+// 			free(pipefd[0]);
+// 			free(pipefd[1]);
+// 			return (pipefd);
+// 		}
+// 		pipe(pipefd[0]);
+// 	}
+// 	else
+// 	{
+// 		// free(pipefd[1]);
+// 		// pipefd[1] = malloc(sizeof(int) * 2);
+// 		if (!pipefd[0] || !pipefd[1])
+// 		{
+// 			free(pipefd[0]);
+// 			free(pipefd[1]);
+// 			return (pipefd);
+// 		}
+// 		pipe(pipefd[1]);
+// 	}
+// 	return (pipefd);
+// }
 
-int	parent_process(int **pipefd)
-{
-	int		status;
+// int	parent_process(int **pipefd)
+// {
+// 	int		status;
 
-	status = 0;
-	fprintf(stderr, "je suis juste avant un waitpid\n");
-	close(pipefd[0][0]);
-	close(pipefd[0][1]);
-	close(pipefd[1][0]);
-	close(pipefd[1][1]);
-	free(pipefd[0]);
-	free(pipefd[1]);
-	free(pipefd);
-	waitpid(-1, &status, 0);
-	return (0);
-}
+// 	status = 0;
+// 	fprintf(stderr, "je suis juste avant un waitpid\n");
+// 	close(pipefd[0][0]);
+// 	close(pipefd[0][1]);
+// 	close(pipefd[1][0]);
+// 	close(pipefd[1][1]);
+// 	free(pipefd[0]);
+// 	free(pipefd[1]);
+// 	free(pipefd);
+// 	waitpid(-1, &status, 0);
+// 	return (0);
+// }
 
 // faire 2 pipe puis dans la boucle tu fork et si dans parent et j'en recree dans le parent
 // faire attention au modulo

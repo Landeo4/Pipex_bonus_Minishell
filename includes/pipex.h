@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 16:39:00 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/17 15:39:00 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/17 17:41:01 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ int		child_process_out(int **pipesfd, char **argv, char **env, int i);
 int		parent_process(int **pipefd);
 int		**alloc_pipe(int i, int **pipefd);
 int		child_process_single(int **pipesfd, char **argv, char **env, int i);
+char	*get_path(char *cmd, char **env);
 
 
 #endif
