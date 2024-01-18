@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 09:19:12 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/18 15:49:41 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/18 17:47:20 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,19 +97,20 @@ char	*ft_do_process(char *envp[], char *cmd, int **pipesfd, int j)
 	while (path[i])
 	{
 		buf = ft_strjoin(path[i], "/");
-		buf2 = ft_strjoin(buf, cmd);
+		// buf2 = ft_strjoin(buf, cmd);
 		// fprintf(stderr, "Avant execve : path[i] = %s\n", path[i]);
 		// fprintf(stderr, "Avant execve : buf2 = %s\n", buf2);
 		// fprintf(stderr, "Avant execve : i = %d\n", i);
-		if (access(buf2, 0) == 0)
+		if (access(buf, 0) == 0)
 		{
-			fprintf(stderr, "path = %s\n", buf2);
+			fprintf(stderr, "path = %s\n", buf);
 			free(path);
-			free(buf);
-			return (buf2);
+			// free(buf);
+			return (buf);
 		}
-		free(buf2);
+		// free(buf2);
 		free(buf);
+		free(path[i]);
 		i++;
 	}
 	free(path);
