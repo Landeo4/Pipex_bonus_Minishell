@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 17:00:57 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/18 17:45:54 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/18 20:35:13 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 ** fd1 = O_RDONLY = read only so we can read but not modify
 ** fd4 = O_WRONLY = Write Only we can write but not read
 ** fd4 = O_CREAT = to create file if does not exist
-** fd4 = O_TRUNC = To cahnge the file if he exist
+** fd4 = O_TRUNC = To change the file if he exist
 */
 
 // il me faut une fonction pour les actions de l'enfant et un pour les parents
@@ -37,6 +37,7 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	char	**new_argv;
 	int		new_argc;
+	char	*buf;
 	// int		**pipefd;
 	(void)argc;
 	(void)new_argc;
@@ -54,7 +55,8 @@ int	main(int argc, char *argv[], char *envp[])
 	while (new_argv[i])
 	{
 		fprintf(stderr, "%s\n", new_argv[i]);
-		if (ft_do_process(envp, new_argv[i], 0, 0) != NULL)
+		buf = arg(argv[i]);
+		if (ft_do_process(envp, buf, 0, 0) != NULL)
 			fprintf(stderr, "success\n");
 		else
 		{
