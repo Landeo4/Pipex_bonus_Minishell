@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 16:39:00 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/17 17:55:07 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/18 14:49:33 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strdup(const char *s);
 char	*ft_cpy(char const *s1, char const *s2, char *str);
 char	*ft_strjoin(char *s1, char *s2);
+int		ft_isalpha(int c);
 
 // =======================================================================
 //								Pipex
@@ -90,7 +91,6 @@ char	**ft_get_path(char **env);
 char	*ft_strchr(const char *string, int searchedChar);
 char	*str_join_free(char *path, char *cmd);
 
-
 t_pipes	*init_struct();
 int		found_max(char **argv);
 int		get_nb_pipes(char **argv);
@@ -106,10 +106,10 @@ int		child_process_middle(int **pipesfd, char **argv, char **env, int i);
 int		child_process_unpair(int **pipesfd, char **argv, char **env, int i);
 int		child_process_in(int **pipesfd, char **argv, char **env,int i);
 int		child_process_out(int **pipesfd, char **argv, char **env, int i);
-int		parent_process(int **pipefd);
+int		**parent_process(int **pipefd, int i);
 int		**alloc_pipe(int i, int **pipefd);
 int		child_process_single(int **pipesfd, char **argv, char **env, int i);
 char	*get_path(char *cmd, char **env);
-
+char	**arg(char *str);
 
 #endif

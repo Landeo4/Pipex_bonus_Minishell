@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 09:19:12 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/17 19:42:29 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/18 15:20:04 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,6 @@ char	*ft_do_process(char *envp[], char *cmd, int **pipesfd, int j)
 	(void)j;
 
 	i = 0;
-	// int	c = 0;
-	// while (envp[c])
-	// {
-	// 	fprintf(stderr, "%s\n", envp[c]);
-	// 	c++;
-	// }
 	path = ft_get_path(envp);
 	// fprintf(stderr, "VERIFICATOPN DANS EXECUTE!!!!\n");
 	// int c = 0;
@@ -98,15 +92,16 @@ char	*ft_do_process(char *envp[], char *cmd, int **pipesfd, int j)
 	// }
 	// c = 0;
 	// fprintf(stderr, "MAINTENANT ARGV\n");
-	// fprintf(stderr, "%s\n", cmd);
+	fprintf(stderr, "commande dans do process %s\n", cmd);
 	// fprintf(stderr, "FIN DES VERIFICATOPN DANS EXECUTE!!!!!\n");
+	(void)buf2;
 	while (path[i])
 	{
 		buf = ft_strjoin(path[i], "/");
 		buf2 = ft_strjoin(buf, cmd);
-		fprintf(stderr, "Avant execve : path[i] = %s\n", path[i]);
-		fprintf(stderr, "Avant execve : cmd_tout_cours = %s\n", cmd);
-		fprintf(stderr, "Avant execve : i = %d\n", i);
+		// fprintf(stderr, "Avant execve : path[i] = %s\n", path[i]);
+		// fprintf(stderr, "Avant execve : buf2 = %s\n", buf2);
+		// fprintf(stderr, "Avant execve : i = %d\n", i);
 		if (access(buf2, 0) == 0)
 		{
 			fprintf(stderr, "path = %s\n", buf2);

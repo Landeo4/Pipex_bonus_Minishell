@@ -6,7 +6,7 @@
 #    By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/10 16:41:59 by tpotilli          #+#    #+#              #
-#    Updated: 2024/01/10 13:23:10 by tpotilli         ###   ########.fr        #
+#    Updated: 2024/01/18 14:35:42 by tpotilli         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRCS	=	srcs/main.c\
 			libft/ft_strdup.c\
 			libft/ft_strjoin.c\
 			libft/ft_strncmp.c\
+			libft/ft_is_alpha.c\
 
 OBJS = $(addprefix $(OBJS_PATH), $(SRCS:.c=.o))
 
