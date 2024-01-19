@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 17:00:57 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/19 20:56:40 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/19 21:00:08 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,6 @@ int	main(int argc, char *argv[], char *envp[])
 	new_argv = get_new_argv(argv);
 	new_argc = found_max(new_argv);
 	int i = 0;
-	(void)fre;
-	(void)buf;
-	(void)i;
 	while (new_argv[i])
 	{
 		fprintf(stderr, "%s\n", new_argv[i]);
