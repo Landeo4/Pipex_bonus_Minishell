@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:32:11 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/19 12:30:51 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/19 20:36:07 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int	**alloc_pipe(int i, int **pipefd)
 
 int	**parent_process(int **pipefd, int i)
 {
-	fprintf(stderr, "je suis juste avant un waitpid\n");
+	fprintf(stderr, "je suis dans le parent et voici mon i %d\n", i);
 	if (i % 2 == 0)
 	{
 		if (!pipefd[0] || !pipefd[1])

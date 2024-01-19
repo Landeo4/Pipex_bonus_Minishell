@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 15:58:51 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/19 14:01:17 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/19 20:42:16 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,12 @@ int	child_process_out(int **pipesfd, char **argv, char **env, int i)
 	fprintf(stderr, "je suis dans out %s %d\n", argv[i], i);
 	if (i % 2 == 1)
 	{
-		close(pipesfd[1][1]);
 		fprintf(stderr, "JE SUIS DANS I %% 2 == 1\n");
 		if (dup2(pipesfd[1][0], 0) < 0)
 			return (free(pipesfd), printf("problem with dup2"), -1);
+		close(pipesfd[1][1]);
+		close(pipesfd[0][1]);
+		close(pipesfd[0][0]);
 		close(pipesfd[1][0]);
 		if (dup2(STDOUT_FILENO, 1) < 0)
 			return (free(pipesfd), printf("problem with dup2"), -1);
@@ -115,9 +117,11 @@ int	child_process_out(int **pipesfd, char **argv, char **env, int i)
 	else
 	{
 		fprintf(stderr, "JE SUIS DANS I %% 2 == 0\n");
-		close(pipesfd[0][1]);
 		if (dup2(pipesfd[0][0], 0) < 0)
 			return (free(pipesfd), printf("problem with dup2"), -1);
+		close(pipesfd[0][1]);
+		close(pipesfd[1][0]);
+		close(pipesfd[1][1]);
 		close(pipesfd[0][0]);
 		if (dup2(STDOUT_FILENO, 1) < 0)
 			return (free(pipesfd[0]), free(pipesfd[1]), free(pipesfd), printf("problem with dup2"), -1);
@@ -125,13 +129,13 @@ int	child_process_out(int **pipesfd, char **argv, char **env, int i)
 	buf = arg(argv[i]);
 	cmd = ft_do_process(env, buf[0], pipesfd, i);
 	cmd_argument = ft_split(argv[i], ' ');
+	free(buf);
 	// fprintf(stderr, "buf de 0 = %s\n", buf[0]);
 	if (!cmd)
 		return (perror("problem with cmd\n"), free(cmd_argument), free(cmd), -1);
 	else if (!cmd_argument)
 		return (perror("problem with cmd_arg\n"), free(cmd_argument), free(cmd), -1);
-	fprintf(stderr, "cmd a la sortie: %s\n", cmd);
-	fprintf(stderr, "execve dans out commence\n");
+	fprintf(stderr, "execve dans out commence, le cmd = %s\n", cmd);
 	execve(cmd, cmd_argument, env);
 	free(cmd);
 	free(cmd_argument);
