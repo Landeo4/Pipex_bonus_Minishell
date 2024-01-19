@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 09:19:12 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/18 20:30:37 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/19 11:55:35 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,12 @@
 	ft_freedb(cmd_argument);
 	fprintf(stderr, "execve a echoue je suis a la fin de la fonction: %s\n", strerror(errno));
 	return (-1);
-}*/
+}
+
+// fprintf(stderr, "Avant execve : path[i] = %s\n", path[i]);
+// fprintf(stderr, "Avant execve : buf2 = %s\n", buf2);
+// fprintf(stderr, "Avant execve : i = %d\n", i);
+*/
 
 char	*ft_do_process(char *envp[], char *cmd, int **pipesfd, int j)
 {
@@ -93,23 +98,21 @@ char	*ft_do_process(char *envp[], char *cmd, int **pipesfd, int j)
 	// fprintf(stderr, "MAINTENANT ARGV\n");
 	fprintf(stderr, "commande dans do process %s\n", cmd);
 	// fprintf(stderr, "FIN DES VERIFICATOPN DANS EXECUTE!!!!!\n");
-	(void)buf2;
 	while (path[i])
 	{
 		buf = ft_strjoin(path[i], "/");
 		buf2 = ft_strjoin(buf, cmd);
-		// fprintf(stderr, "Avant execve : path[i] = %s\n", path[i]);
-		// fprintf(stderr, "Avant execve : buf2 = %s\n", buf2);
-		// fprintf(stderr, "Avant execve : i = %d\n", i);
+		free(buf);
 		if (access(buf2, 0) == 0)
 		{
-			fprintf(stderr, "donc buf = %s\n", buf);
+			fprintf(stderr, "donc buf2 = %s\n", buf2);
+			free(path[i]);
+			while (path[i++])
+				free(path[i]);
 			free(path);
-			free(buf);
-			return (buf);
+			return (buf2);
 		}
 		free(buf2);
-		free(buf);
 		free(path[i]);
 		i++;
 	}

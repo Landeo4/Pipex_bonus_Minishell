@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:32:11 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/18 11:49:32 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/19 12:30:51 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,22 +40,21 @@
 
 int	ft_pipex(char *argv[], char *env[], int argc)
 {
-	pid_t		pid;
+	pid_t		pid[argc];
 	int			**pipefd;
 	int			i;
 
 	i = 0;
-	// fprintf(stderr, "argc = %d\n", argc);
 	pipefd = NULL;
 	pipefd = alloc_pipe(i, pipefd);
 	if (!pipefd[1] || !pipefd[0])
 		return (free(pipefd), -1);
 	while (i < argc)
 	{
-		pid = fork();
-		if (pid < 0)
+		pid[i] = fork();
+		if (pid[i] < 0)
 			return (printf("erreur de fork\n"), 1);
-		if (pid == 0)
+		if (pid[i] == 0)
 		{
 			if (i == 0)
 			{
@@ -75,35 +74,19 @@ int	ft_pipex(char *argv[], char *env[], int argc)
 		}
 		else
 			pipefd = parent_process(pipefd, i);
-		// if (i % 2 == 0)
-		// {
-		// 	close(pipefd[0][0]);
-		// 	close(pipefd[0][1]);
-		// }
-		// else
-		// {
-		// 	close(pipefd[1][0]);
-		// 	close(pipefd[1][1]);
-		// }
+		i++;
+	}
+	i = 0;
+	while (i < argc)
+	{
+		fprintf(stderr, "voici le pid qui attend %d\n", pid[i]);
+		waitpid(pid[i], NULL, 0);
 		i++;
 	}
 	fprintf(stderr, "HELOOOOO\n");
-	// if (pid > 0)
-		// parent_process(pipefd);
-	// int	j = 0;
-	// int status = 0;
-	// close(pipefd[0][0]);
-	// close(pipefd[0][1]);
-	// close(pipefd[1][0]);
-	// close(pipefd[1][1]);
-	// while (j < argc)
-	// {
-	// 	waitpid(pid[j], &status, 0);
-	// 	j++;
-	// }
-	// free(pipefd[0]);
-	// free(pipefd[1]);
-	// free(pipefd);
+	free(pipefd[0]);
+	free(pipefd[1]);
+	free(pipefd);
 	return (0);
 }
 
@@ -125,56 +108,30 @@ int	**alloc_pipe(int i, int **pipefd)
 		pipe(pipefd[0]);
 		pipe(pipefd[1]);
 	}
-	else if (i % 2 == 0)
-	{
-		// free(pipefd[0]);
-		// pipefd[0] = malloc(sizeof(int) * 2);
-		if (!pipefd[0] || !pipefd[1])
-		{
-			free(pipefd[0]);
-			free(pipefd[1]);
-			return (pipefd);
-		}
-		pipe(pipefd[0]);
-	}
-	else
-	{
-		// free(pipefd[1]);
-		// pipefd[1] = malloc(sizeof(int) * 2);
-		if (!pipefd[0] || !pipefd[1])
-		{
-			free(pipefd[0]);
-			free(pipefd[1]);
-			return (pipefd);
-		}
-		pipe(pipefd[1]);
-	}
 	return (pipefd);
 }
 
 int	**parent_process(int **pipefd, int i)
 {
-	// int		status;
-
-	// status = 0;
 	fprintf(stderr, "je suis juste avant un waitpid\n");
 	if (i % 2 == 0)
 	{
+		if (!pipefd[0] || !pipefd[1])
+			return (free(pipefd[0]), free(pipefd[1]), free(pipefd), NULL);
 		close(pipefd[0][0]);
 		close(pipefd[0][1]);
+		pipe(pipefd[0]);
 	}
 	else
 	{
-		close(pipefd[1][0]);
+		if (!pipefd[0] || !pipefd[1])
+			return (free(pipefd[0]), free(pipefd[1]), free(pipefd), NULL);
 		close(pipefd[1][1]);
+		close(pipefd[1][0]);
+		pipe(pipefd[1]);
 	}
-	// free(pipefd[0]);
-	// free(pipefd[1]);
-	// free(pipefd);
-	// waitpid(-1, &status, 0);
-	pipefd = alloc_pipe(i, pipefd);
-	if (!pipefd[1] || !pipefd[0])
-		return (free(pipefd), NULL);
+	// if (!pipefd[1] || !pipefd[0])
+	// 	return (free(pipefd), NULL);
 	return (pipefd);
 }
 
@@ -197,3 +154,44 @@ t_pipes *init_struct()
 	}
 	return (pipes);
 }
+
+/*
+if (i % 2 == 0)
+	{
+		close(pipefd[0][0]);
+		close(pipefd[0][1]);
+		if (!pipefd[0] || !pipefd[1])
+		{
+			free(pipefd[0]);
+			free(pipefd[1]);
+			return (pipefd);
+		}
+		pipe(pipefd[0]);
+	}
+	else
+	{
+		close(pipefd[1][0]);
+		close(pipefd[1][1]);
+		if (!pipefd[0] || !pipefd[1])
+		{
+			free(pipefd[0]);
+			free(pipefd[1]);
+			return (pipefd);
+		}
+		pipe(pipefd[0]);
+	}
+*/
+
+	// if (pid > 0)
+		// parent_process(pipefd);
+	// int	j = 0;
+	// int status = 0;
+	// close(pipefd[0][0]);
+	// close(pipefd[0][1]);
+	// close(pipefd[1][0]);
+	// close(pipefd[1][1]);
+	// while (j < argc)
+	// {
+	// 	waitpid(pid[j], &status, 0);
+	// 	j++;
+	// }

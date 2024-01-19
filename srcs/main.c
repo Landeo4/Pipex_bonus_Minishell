@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 17:00:57 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/18 20:35:13 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/19 13:37:08 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,38 +37,36 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	char	**new_argv;
 	int		new_argc;
-	char	*buf;
-	// int		**pipefd;
-	(void)argc;
-	(void)new_argc;
-	// int	file[2];
+	char	**buf;
+	char	*fre;
 
-	// file[0] = ft_create_fd(argv[1], O_RDONLY);
-	// file[1] = ft_create_fd(argv[argc - 1], O_WRONLY | O_CREAT | O_TRUNC);
-	// if (file[0] == -1 || file[1] == -1)
-		// return (1);
+	(void)argc;
 	new_argv = NULL;
-	// int i = 0;
 	new_argv = get_new_argv(argv);
 	new_argc = found_max(new_argv);
 	int i = 0;
 	while (new_argv[i])
 	{
-		fprintf(stderr, "%s\n", new_argv[i]);
-		buf = arg(argv[i]);
-		if (ft_do_process(envp, buf, 0, 0) != NULL)
+		// fprintf(stderr, "%s\n", new_argv[i]);
+		buf = arg(new_argv[i]);
+		fre = ft_do_process(envp, buf[0], 0, 0);
+		if (fre != NULL)
 			fprintf(stderr, "success\n");
 		else
 		{
+			ft_freedb_essaie(buf);
 			ft_freedb_essaie(new_argv);
 			return (0);
 		}
+		ft_freedb_essaie(buf);
+		free(fre);
 		i++;
 	}
 	fprintf(stderr, "%d\n", new_argc);
 	ft_pipex(new_argv, envp, new_argc);
 	waitpid(-1, NULL, 0);
 	ft_freedb_essaie(new_argv);
+	fprintf(stderr, "TOUT EST FINIS\n");
 	return (0);
 	// fprintf(stderr, "==avant pipex==\n");
 	// if (argc == 2)
