@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 17:00:57 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/19 20:41:01 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/19 20:56:40 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,24 +48,24 @@ int	main(int argc, char *argv[], char *envp[])
 	(void)fre;
 	(void)buf;
 	(void)i;
-	// while (new_argv[i])
-	// {
-	// 	// fprintf(stderr, "%s\n", new_argv[i]);
-	// 	buf = arg(new_argv[i]);
-	// 	fre = ft_do_process(envp, buf[0], 0, 0);
-	// 	if (fre != NULL)
-	// 		fprintf(stderr, "success\n");
-	// 	else
-	// 	{
-	// 		ft_freedb_essaie(buf);
-	// 		ft_freedb_essaie(new_argv);
-	// 		return (0);
-	// 	}
-	// 	ft_freedb_essaie(buf);
-	// 	free(fre);
-	// 	i++;
-	// }
-	// fprintf(stderr, "%d\n", new_argc);
+	while (new_argv[i])
+	{
+		fprintf(stderr, "%s\n", new_argv[i]);
+		buf = arg(new_argv[i]);
+		fre = ft_do_process(envp, buf[0], 0, 0);
+		if (fre != NULL)
+			fprintf(stderr, "success\n");
+		else
+		{
+			ft_freedb_essaie(buf);
+			ft_freedb_essaie(new_argv);
+			return (0);
+		}
+		ft_freedb_essaie(buf);
+		free(fre);
+		i++;
+	}
+	fprintf(stderr, "%d\n", new_argc);
 	ft_pipex(new_argv, envp, new_argc);
 	waitpid(-1, NULL, 0);
 	ft_freedb_essaie(new_argv);
