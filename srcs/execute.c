@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/18 09:19:12 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/19 11:55:35 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/19 13:55:26 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ char	*ft_do_process(char *envp[], char *cmd, int **pipesfd, int j)
 		i++;
 	}
 	free(path);
-	fprintf(stderr, "tout a echouer saaaaaaaad\n");
+	fprintf(stderr, "======TOUT A ECHOUER DANS FT_DO_PROCESS====== %s\n", cmd);
 	return (NULL);
 }
 

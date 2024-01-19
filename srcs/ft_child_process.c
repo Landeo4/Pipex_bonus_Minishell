@@ -6,13 +6,13 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 15:58:51 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/19 13:38:42 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/19 14:01:17 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	child_process_in(int **pipesfd, char **argv, char **env, int i)
+int	child_process_in(int **pipefd, char **argv, char **env, int i)
 {
 	char		**cmd_argument;
 	char		*cmd;
@@ -21,68 +21,77 @@ int	child_process_in(int **pipesfd, char **argv, char **env, int i)
 	fprintf(stderr, "in %s %d\n", argv[i], i);
 	if (dup2(STDIN_FILENO, STDIN_FILENO) < 0)
 		return (printf("problem with dup2"), -1);
-	if (dup2(pipesfd[1][1], STDOUT_FILENO) < 0)
+	if (dup2(pipefd[1][1], STDOUT_FILENO) < 0)
 		return (printf("problem with dup2"), -1);
-	close(pipesfd[1][1]);
+	close(pipefd[1][1]);
 	buf = arg(argv[i]);
 	fprintf(stderr, "buf de 0 = %s dans in\n", buf[0]);
-	cmd = ft_do_process(env, buf[0], pipesfd, i);
+	cmd = ft_do_process(env, buf[0], pipefd, i);
+	if (cmd == NULL)
+	{
+		free_pipe_argv(pipefd, argv);
+		exit(0);
+	}
 	cmd_argument = ft_split(argv[i], ' ');
 	fprintf(stderr, "pour execve cmd = %s dans in\n", cmd);
 	int		c = 0;
-	while (cmd_argument[c])
-	{
+	while (cmd_argument[c++])
 		fprintf(stderr, "pour execve cmd_argument = %s dans in\n", cmd_argument[c]);
-		c++;
-	}
 	execve(cmd, cmd_argument, env);
-	perror("execve a echouer dans in");
+	perror("EXECVE A ECHOUER DANS IN\n");
 	free(cmd);
 	free(cmd_argument);
-	free(pipesfd[0]);
-	free(pipesfd[1]);
-	exit(0);
+	free(pipefd[0]);
+	free(pipefd[1]);
+	// exit(0);
 	return (0);
 }
 
-int	child_process_middle(int **pipesfd, char **argv, char **env, int i)
+int	child_process_middle(int **pipefd, char **argv, char **env, int i)
 {
 	char		**cmd_argument;
 	char		*cmd;
+	char		**buf;
 
-	fprintf(stderr, "mid %s %d\n", argv[i], i);
+	// fprintf(stderr, "mid %s %d\n", argv[i], i);
 	if (i % 2 == 1)
 	{
-		// close(pipesfd[1][0]);
-		// close(pipesfd[0][1]);
-		if (dup2(pipesfd[0][0], STDIN_FILENO) < 0)
-			return (printf("problem with dup2"), -1);
-		close(pipesfd[0][0]);
-		// close(pipesfd[1].pipes[0])
-		if (dup2(pipesfd[1][1], STDOUT_FILENO) < 0)
-			return (printf("problem with dup2"), -1);
-		close(pipesfd[1][1]);
+		close(pipefd[0][1]);
+		close(pipefd[1][0]);
+		if (dup2(pipefd[0][0], STDIN_FILENO) < 0)
+			return (printf("problem with dup2 mid 1"), -1);
+		close(pipefd[0][0]);
+		if (dup2(pipefd[1][1], STDOUT_FILENO) < 0)
+			return (printf("problem with dup2 mid 2"), -1);
+		close(pipefd[1][1]);
 	}
 	else
 	{
-		// close(pipesfd[1][1]);
-		// close(pipesfd[0][0]);
-		if (dup2(pipesfd[1][0], STDIN_FILENO) < 0)
-			return (printf("problem with dup2"), -1);
-		close(pipesfd[1][0]);
-		// close(pipesfd[0].pipes[0])
-		if (dup2(pipesfd[0][1], STDOUT_FILENO) < 0)
-			return (printf("problem with dup2"), -1);
-		close(pipesfd[0][1]);
+		close(pipefd[0][0]);
+		close(pipefd[1][1]);
+		if (dup2(pipefd[1][0], STDIN_FILENO) < 0)
+			return (printf("problem with dup2 mid 3"), -1);
+		close(pipefd[1][0]);
+		if (dup2(pipefd[0][1], STDOUT_FILENO) < 0)
+			return (printf("problem with dup2 mid 4"), -1);
+		close(pipefd[0][1]);
 	}
-	cmd = ft_do_process(env, argv[i], pipesfd, i);
+	buf = arg(argv[i]);
+	cmd = ft_do_process(env, buf[0], pipefd, i);
 	cmd_argument = ft_split(argv[i], ' ');
+	if (cmd == NULL)
+	{
+		free_pipe_argv(pipefd, argv);
+		exit(0);
+	}
+	else if (!cmd_argument)
+		return (perror("problem with cmd_arg\n"), free(cmd_argument), free(cmd), -1);
 	execve(cmd, cmd_argument, env);
 	free(cmd);
 	free(cmd_argument);
-	free(pipesfd[0]);
-	free(pipesfd[1]);
-	exit(0);
+	free(pipefd[0]);
+	free(pipefd[1]);
+	// exit(0);
 	return (0);
 }
 
@@ -128,8 +137,8 @@ int	child_process_out(int **pipesfd, char **argv, char **env, int i)
 	free(cmd_argument);
 	free(pipesfd[0]);
 	free(pipesfd[1]);
-	perror("execve dans out rater");
-	exit(0);
+	perror("EXECVE A ECHOUER DANS OUT");
+	// exit(0);
 	return (0);
 }
 
@@ -139,6 +148,18 @@ char	**arg(char *str)
 
 	buf = ft_split(str, ' ');
 	return (buf);
+}
+
+void	free_pipe_argv(int **pipefd, char *argv[])
+{
+	close(pipefd[0][0]);
+	close(pipefd[0][1]);
+	close(pipefd[1][1]);
+	close(pipefd[1][0]);
+	free(pipefd[1]);
+	free(pipefd[0]);
+	free(pipefd);
+	ft_freedb_essaie(argv);
 }
 
 int	child_process_single(int **pipesfd, char **argv, char **env, int i)

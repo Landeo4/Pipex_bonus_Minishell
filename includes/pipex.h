@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 16:39:00 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/18 14:49:33 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/19 13:50:20 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,5 +111,6 @@ int		**alloc_pipe(int i, int **pipefd);
 int		child_process_single(int **pipesfd, char **argv, char **env, int i);
 char	*get_path(char *cmd, char **env);
 char	**arg(char *str);
+void	free_pipe_argv(int **pipefd, char *argv[]);
 
 #endif
