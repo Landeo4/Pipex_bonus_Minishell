@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/10 17:00:57 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/19 21:00:08 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/20 09:03:33 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int	main(int argc, char *argv[], char *envp[])
 		free(fre);
 		i++;
 	}
-	fprintf(stderr, "%d\n", new_argc);
+	fprintf(stderr, "%d\n========ENTRE DANS LE PROGRAMME PRINCIPAL========\n", new_argc);
 	ft_pipex(new_argv, envp, new_argc);
 	waitpid(-1, NULL, 0);
 	ft_freedb_essaie(new_argv);

@@ -6,7 +6,7 @@
 /*   By: tpotilli <tpotilli@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 15:58:51 by tpotilli          #+#    #+#             */
-/*   Updated: 2024/01/19 20:56:20 by tpotilli         ###   ########.fr       */
+/*   Updated: 2024/01/20 10:06:03 by tpotilli         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,9 @@ int	child_process_in(int **pipefd, char **argv, char **env, int i)
 	if (dup2(pipefd[1][1], STDOUT_FILENO) < 0)
 		return (printf("problem with dup2"), -1);
 	close(pipefd[1][1]);
+	close(pipefd[0][1]);
+	close(pipefd[0][0]);
+	close(pipefd[1][0]);
 	buf = arg(argv[i]);
 	fprintf(stderr, "buf de 0 = %s dans in\n", buf[0]);
 	cmd = ft_do_process(env, buf[0], pipefd, i);
@@ -53,9 +56,10 @@ int	child_process_middle(int **pipefd, char **argv, char **env, int i)
 	char		*cmd;
 	char		**buf;
 
-	// fprintf(stderr, "mid %s %d\n", argv[i], i);
+	fprintf(stderr, "mid %s i = %d\n", argv[i], i);
 	if (i % 2 == 1)
 	{
+		fprintf(stderr, "je passe par 1 au mid\n");
 		close(pipefd[0][1]);
 		close(pipefd[1][0]);
 		if (dup2(pipefd[0][0], STDIN_FILENO) < 0)
@@ -67,8 +71,8 @@ int	child_process_middle(int **pipefd, char **argv, char **env, int i)
 	}
 	else
 	{
-		close(pipefd[0][0]);
-		close(pipefd[1][1]);
+		// close(pipefd[0][0]);
+		// close(pipefd[1][1]);
 		if (dup2(pipefd[1][0], STDIN_FILENO) < 0)
 			return (printf("problem with dup2 mid 3"), -1);
 		close(pipefd[1][0]);
@@ -86,12 +90,13 @@ int	child_process_middle(int **pipefd, char **argv, char **env, int i)
 	}
 	else if (!cmd_argument)
 		return (perror("problem with cmd_arg\n"), free(cmd_argument), free(cmd), -1);
+	fprintf(stderr, "MID AVANT EXEC\n");
 	execve(cmd, cmd_argument, env);
+	fprintf(stderr, "EXEC DANS MID RATE\n");
 	free(cmd);
 	free(cmd_argument);
 	free(pipefd[0]);
 	free(pipefd[1]);
-	// exit(0);
 	return (0);
 }
 
